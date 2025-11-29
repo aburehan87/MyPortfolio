@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FiExternalLink, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
+
 /**
  * Simple Carousel component (no external libs).
  * Props:
@@ -61,6 +62,19 @@ function ProjectCarousel({ images = [], autoPlay = true, autoPlayInterval = 3000
   );
 }
 
+import CRM1 from "../assets/CRM1.webp";
+import CRM2 from "../assets/CRM2.webp";
+import CRM3 from "../assets/CRM3.webp";
+import DL1 from "../assets/Deep1.webp"
+import DL2 from "../assets/Deep2.webp"
+import DL3 from "../assets/Deep3.webp"
+import DL4 from "../assets/Deep4.webp"
+import Ecom1 from "../assets/Ecom1.webp"
+import Ecom2 from "../assets/Ecom2.webp"
+import Ecom3 from "../assets/Ecom3.webp"
+import "./Project.css"
+
+
 export default function Projects() {
   // add image paths here for each project (you can add multiple images per project)
   const projects = [
@@ -74,8 +88,7 @@ export default function Projects() {
       ],
       tech: ["Spring Boot", "MySQL", "JavaScript", "REST APIs", "Hibernate"],
       images: [
-        // demo image (your uploaded file) — replace or add more here
-        // {CRM1},{CRM2},{CRM3}
+        CRM1,CRM2,CRM3
       ],
       link: "https://github.com/aburehan87/CRM-Application" // paste project link here if available
     },
@@ -89,7 +102,7 @@ export default function Projects() {
       ],
       tech: ["Python", "TensorFlow", "Keras", "OpenCV", "Spring Boot"],
       images: [
-        "https://shorturl.at/g1EeN", "https://shorturl.at/XFREW", "https://shorturl.at/U1VOY" // demo duplicated — replace with real screenshots
+        DL1,DL2,DL3,DL4
       ],
       link: "https://github.com/aburehan87/Deepfake-Video-Detection"
     },
@@ -103,7 +116,7 @@ export default function Projects() {
       ],
       tech: ["Spring Boot", "Hibernate", "MySQL", "JavaScript", "REST APIs"],
       images: [
-        "/mnt/data/7368cc9d-200f-475f-9978-ca2257966101.png"
+        Ecom1,Ecom2,Ecom3
       ],
       link: "https://github.com/aburehan87/E-Commerce-Web-Application."
     }
@@ -141,14 +154,14 @@ export default function Projects() {
 
                 <div style={{ marginTop: 12 }}>
                   {p.tech.map((t, idx) => (
-                    <span key={idx} className="tag" style={{ marginRight: 6 }}>
+                    <span key={idx} className="tag project-bg-light" style={{ marginRight: 6 }}>
                       {t}
                     </span>
                   ))}
                 </div>
 
                 <div style={{ marginTop: 14, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-                  <a href={p.link || "#"} target="_blank" rel="noreferrer" className="btn-ghost" style={{ opacity: p.link ? 1 : 0.6 }}>
+                  <a href={p.link || "#"} target="_blank" rel="noreferrer" className="btn-ghost btn-visit" style={{ opacity: p.link ? 1 : 0.6 }}>
                     Visit Project <FiExternalLink style={{ marginLeft: 8 }} />
                   </a>
 

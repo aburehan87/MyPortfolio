@@ -64,61 +64,56 @@ export default function Academics() {
       `}</style>
 
       <motion.h2 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 30 }}>
-        Academics
+        Experience
       </motion.h2>
 
       <Skills intro="Full Stack & AI/ML Developer with hands-on backend, API design, and model-building experience." />
 
-      <div className="timeline-wrapper">
-        {academics.map((item, idx) => (
-          <motion.div
-            key={item.id}
-            className="timeline-item"
-            initial="off"
-            whileInView="on"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={itemVariant}
-          >
-            {/* animated dot — keep same DOM as your CSS expects but add animation class */}
-            <div className="dot timeline-dot-animated" style={{ left: 56 }} />
+    <div className="timeline-wrapper">
+  {academics.map((item, idx) => (
+    <motion.div
+      key={item.id}
+      className={`timeline-item ${idx % 2 === 0 ? "timeline-left" : "timeline-right"}`}
+      initial="off"
+      whileInView="on"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={itemVariant}
+    >
+      {/* Center date on timeline */}
+      <div className="timeline-date">{item.title}</div>
 
-            <div className="content">
-              <h3 style={{ margin: "0 0 6px" }}>{item.title}</h3>
+      {/* Dot on the center line */}
+      {/* <div className="timeline-dot"></div> */}
 
-              {/* designation with small icon badge */}
-              {item.designation && (
-                <div style={{ marginBottom: 8 }}>
-                  <span className="designation-badge">
-                    <FaBriefcase style={{ width: 16, height: 16 }} />
-                    {item.designation}
-                  </span>
-                </div>
-              )}
+      {/* Timeline Card */}
+      <div className="content">
+        {item.designation && (
+          <div style={{ marginBottom: 8 }}>
+            <span className="designation-badge">
+              <FaBriefcase style={{ width: 16, height: 16 }} />
+              {item.designation}
+            </span>
+          </div>
+        )}
 
-              <p style={{ margin: "0 0 8px", color: "var(--muted)" }}>{item.place}</p>
+        <p style={{ margin: "0 0 8px", color: "var(--muted)" }}>{item.place}</p>
 
-              <ul style={{ margin: "8px 0 0", paddingLeft: "20px", lineHeight: "1.55" }}>
-                {item.details
-                  .split("-")
-                  .map((line) => line.trim())
-                  .filter((line) => line.length > 0)
-                  .map((point, i) => (
-                    <li key={i} style={{ marginBottom: "6px", color: "var(--muted)" }}>
-                      {point}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-
-            {/* optional preview image kept as before */}
-            {/* {item.image && (
-              <div className="timeline-image-wrap" style={{ marginLeft: 16 }}>
-                <img src={item.image} alt={`${item.place} preview`} className="timeline-image" />
-              </div>
-            )} */}
-          </motion.div>
-        ))}
+        <ul style={{ margin: "8px 0 0", paddingLeft: "20px", lineHeight: "1.55" }}>
+          {item.details
+            .split("-")
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0)
+            .map((point, i) => (
+              <li key={i} style={{ marginBottom: "6px", color: "var(--muted)" }}>
+                {point}
+              </li>
+            ))}
+        </ul>
       </div>
+    </motion.div>
+  ))}
+</div>
+
     </div>
   );
 }

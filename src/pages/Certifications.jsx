@@ -1,6 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiExternalLink } from "react-icons/fi";
+import Java from "../assets/DigitalEdify.webp"
+import python from "../assets/Python.webp"
+import Dsa from "../assets/DSA.webp"
+import oracle from "../assets/oracle.webp"
+
 
 export default function Certifications() {
   const certs = [
@@ -9,29 +14,30 @@ export default function Certifications() {
       name: "Java Full Stack Development",
       organization: "Digital Edify",
       link: "https://drive.google.com/file/d/1h-l8uP8LEuVPglDBFfCQOhiESvYVYY4J/view?usp=drive_link",
-      image: "https://drive.google.com/uc?id=18KQE5fw77eIbBDoUM9jH27KxPJ5rPzTP"
+      image: Java
     },
     {
       id: 2,
       name: "Spring Boot 3 and Spring Framework",
       organization: "Udemy",
       link: "https://www.udemy.com/certificate/UC-a76ebf65-8501-446c-bb17-aa0ac0b29334/",
-      image: "https://udemy-certificate.s3.amazonaws.com/image/UC-a76ebf65-8501-446c-bb17-aa0ac0b29334.jpg?v=1667285636000"
+      image: python
     },
     {
       id: 3,
       name: "Mastering Data Structures and Algorithms using C and C++",
       organization: "Udemy",
       link: "https://www.udemy.com/certificate/UC-7318bdd4-b90b-4785-aeaf-3fd6e3ae430b/",
-      image: "https://udemy-certificate.s3.amazonaws.com/image/UC-7318bdd4-b90b-4785-aeaf-3fd6e3ae430b.jpg?v=1694025259000"
+      image: Dsa
     },
     {
       id: 4,
       name: "Oracle Certified Associate Java Programmer (OCAJP) 1Z0-808",
       organization: "Udemy",
       link: "https://www.udemy.com/certificate/UC-6c66ae6d-da69-4cc1-ae4f-809518b8d998/",
-      image: "https://udemy-certificate.s3.amazonaws.com/image/UC-6c66ae6d-da69-4cc1-ae4f-809518b8d998.jpg?v=1694056694000"
+      image: oracle
     }
+    
   ];
 
   return (

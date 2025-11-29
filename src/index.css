@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 :root {
   --bg: #0f1724;
   --card: #0b1220;
@@ -12,6 +17,20 @@
   --card-hover-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
 }
 
+:root.light {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --muted: #4b5563;
+  --accent: #6366f1; /* keep same accent */
+  --glass: rgba(0, 0, 0, 0.03);
+  --round: 12px;
+  --maxw: 1100px;
+  --gap: 20px;
+  --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+  --card-hover-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+  
+}
+
 /* ---------- base layout ---------- */
 * {
   box-sizing: border-box;
@@ -23,15 +42,32 @@ body,
   height: 100%;
   margin: 0;
 }
+body {
+  background: var(--bg);
+  color: var(--muted);
+}
 
 body {
   font-family: var(--sans);
-  background: radial-gradient(circle at top left, #1b2235, #0f1724 60%);
-  color: #e6eef8;
+  /* background: radial-gradient(circle at top left, #1b2235, #0f1724 60%); */
+  /* color: #e6eef8; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 24px;
   transition: background-color 250ms ease;
+}
+.tag{
+  color: var(--muted) !important;
+  border: 1px solid var(--bg);
+}
+
+.theme{
+  padding: 5px 5px;
+  border-radius: 50%;
+  background-color: var(--card);
+  color: var(--muted);
+  border: none;
+  font-size: 20px;
 }
 
 /* LIGHT THEME BELOW CODE */
@@ -118,6 +154,7 @@ nav.topnav {
   display: flex;
   gap: 12px;
   align-items: center;
+  /* visibility: visible; */
 }
 
 nav.topnav a {
@@ -171,6 +208,7 @@ nav.topnav a:hover {
   transition: transform 200ms ease, box-shadow 200ms ease;
   will-change: transform;
   transform: translateZ(0);
+  
 }
 
 .intro h2 {
@@ -805,4 +843,99 @@ footer {
 /* small responsive tweak to keep pills readable */
 @media (max-width: 680px) {
   .nav-pill { padding: 10px 14px; font-size: 14px; }
+}
+
+
+/* ------------------------------ */
+/* Floating WhatsApp Button */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #25D366; /* WhatsApp green */
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  background-color: #1ebe5d;
+}
+/* center vertical line */
+.timeline-wrapper {
+  position: relative;
+  margin-top: 40px;
+  padding: 20px 0;
+}
+
+.timeline-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-50%);
+}
+
+/* card wrappers */
+.timeline-item {
+  position: relative;
+  width: 100%;
+  margin: 50px 0;
+}
+
+/* left card */
+.timeline-left .content {
+  width: 42%;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* right card */
+.timeline-right .content {
+  width: 42%;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* CENTER DATE ON TIMELINE */
+.timeline-date {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(4px);
+  border-radius: 6px;
+  font-size: 14px;
+  color: #cdd6f4;
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+}
+
+/* dot */
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  background: #6366f1;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  z-index: 5;
+  box-shadow: 0 0 10px rgba(99,102,241,0.6);
 }

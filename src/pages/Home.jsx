@@ -3,23 +3,24 @@ import React from "react";
 import CRMCarousel from "../components/CRMCarousel";
 import ContactForm from "../components/ContactForm";
 import { FaGithub, FaLinkedin, FaEnvelope, FaDownload } from "react-icons/fa";
+import img1 from "../assets/CRM1.webp"
+import img2 from "../assets/CRM2.webp"
+import img3 from "../assets/CRM3.webp"
+import "./Home.css"
 
 export default function Home() {
-  // CRM slideshow image URLs
-  const crmImages = [
-    "https://shorturl.at/eGem8",
-    "https://shorturl.at/POkyB",
-    "https://shorturl.at/mzvWI"
-  ];
+ 
+ 
+  const crmImages =[img1,img2,img3];
 
   return (
     <div className="home-page">
       {/* ================= HERO SECTION ================= */}
       <section className="hero">
-        <div className="intro card">
+        <div className="intro card ">
           <h2>Hi, I'm Rehan — I build reliable backend systems.</h2>
 
-          <p>
+          <p className="">
             I’m a backend-focused Java developer who enjoys building clean,
             scalable applications using Spring Boot, REST APIs, and SQL.
             Currently improving my frontend skills to become stronger at
@@ -63,26 +64,26 @@ export default function Home() {
         </div>
 
         {/* ================= SKILLS SIDEBAR ================= */}
-        <aside className="card" style={{ padding: 16 }}>
+        <aside className="card rehan" style={{ padding: 16 }}>
           <h4 style={{ marginTop: 0 }}>Skills</h4>
 
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
-            <span className="tag">Java</span>
-            <span className="tag">Python</span>
-            <span className="tag">C</span>
-            <span className="tag">C++</span>
-            <span className="tag">MySQL</span>
-             <span className="tag">PostgreSQL</span>
-            <span className="tag">Spring Boot</span>
-             <span className="tag">Pandas</span>
-              <span className="tag">NumPy</span>
-               <span className="tag">TensorFlow</span>
-            <span className="tag">REST APIs</span>
-           <span className="tag">Git</span>
-            <span className="tag">GitHub</span>
-             <span className="tag">Machine Learning</span>
-              <span className="tag">NLP</span>
-               <span className="tag">Data Structures and Algorithms</span>
+          <div className="" style={ { display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+            <span className="tag bg-change-white">Java</span>
+            <span className="tag bg-change-white">Python</span>
+            <span className="tag bg-change-white">C</span>
+            <span className="tag bg-change-white">C++</span>
+            <span className="tag bg-change-white">MySQL</span>
+             <span className="tag bg-change-white">PostgreSQL</span>
+            <span className="tag bg-change-white">Spring Boot</span>
+             <span className="tag bg-change-white">Pandas</span>
+              <span className="tag bg-change-white">NumPy</span>
+               <span className="tag bg-change-white">TensorFlow</span>
+            <span className="tag bg-change-white">REST APIs</span>
+           <span className="tag bg-change-white">Git</span>
+            <span className="tag bg-change-white">GitHub</span>
+             <span className="tag bg-change-white">Machine Learning</span>
+              <span className="tag bg-change-white">NLP</span>
+               <span className="tag bg-change-white">Data Structures and Algorithms</span>
           </div>
         </aside>
       </section>
