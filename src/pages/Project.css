@@ -6,3 +6,109 @@
     border: 1px solid #6366F1;
     
 }
+/* Outer layout */
+.project-card {
+  width: 100%;
+}
+
+/* flex container */
+.project-inner {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* left content */
+.project-content {
+  flex: 1 1 520px;
+  min-width: 280px;
+}
+
+/* right carousel */
+.project-carousel {
+  flex: 0 0 360px;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* Make carousel images responsive */
+.carousel-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* -------- RESPONSIVE BREAKPOINTS -------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .project-carousel {
+    max-width: 100%;
+    flex: 1 1 100%;
+    margin-top: 10px;
+  }
+
+  .project-inner {
+    flex-direction: column;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .project-inner {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .project-content {
+    flex: 1 1 100%;
+  }
+
+  .project-carousel {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .carousel {
+    width: 100%;
+  }
+
+  .project-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  h3 {
+    font-size: 18px;
+    
+  }
+ .carousel-viewport{
+    /* width: 60% !important; */
+    
+ }
+ .carousel{
+    display: flex;
+    justify-content: center;
+    /* border: 2px solid red; */
+    width: 80%;
+ }
+ .project-bg-light{
+    margin-top: 8px;
+ }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* .project-bg-light {
+    font-size: 12px;
+    padding: 4px 8px;
+  } */
+}

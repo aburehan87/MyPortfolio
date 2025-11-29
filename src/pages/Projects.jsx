@@ -133,7 +133,7 @@ export default function Projects() {
         {projects.map((p, i) => (
           <motion.section
             key={i}
-            className="card"
+            className="card project-card"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: i * 0.06 }}
@@ -141,7 +141,7 @@ export default function Projects() {
           >
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", flexWrap: "wrap" }}>
               {/* left: content (flex: 1) */}
-              <div style={{ flex: "1 1 520px", minWidth: 280 }}>
+              <div className="project-content" style={{ flex: "1 1 520px", minWidth: 280 }}>
                 <h3 style={{ marginTop: 0 }}>{p.title}</h3>
 
                 <div style={{ marginTop: 8 }}>
@@ -171,7 +171,7 @@ export default function Projects() {
               </div>
 
               {/* right: carousel preview (fixed column width on desktop) */}
-              <div style={{ flex: "0 0 360px", width: "100%", maxWidth: 360 }}>
+              <div className="project-carousel" style={{ flex: "0 0 360px", width: "100%", maxWidth: 360 }}>
                 <ProjectCarousel images={p.images} autoPlay={true} autoPlayInterval={3500} />
               </div>
             </div>

@@ -4,3 +4,48 @@
     color: black !important;
 }
 
+@media (max-width: 480px) {
+    .content{
+        /* border: 2px solid red !important; */
+        width: 50%;
+        /* border: 2px solid red !important; */
+        /* margin-top: 40px; */
+        /* position: relative; */
+        /* margin-bottom: 20px; */
+
+        
+    }
+    
+   .timeline-item{
+        /* border: 2px solid red !important; */
+        /* width: 40%; */
+
+   }
+
+    
+     .timeline-date{
+        display: flex;
+        display: contents;
+        
+
+    }
+
+
+
+    .timeline-left{
+        width: 250% !important;
+        margin-left: -20px !important;
+        /* margin-top: -30px !important; */
+        /* justify-content: baseline; */
+        /* text-align: center; */
+        z-index: 0;
+        
+    }
+    .timeline-right{
+        width: 250% !important;
+        margin-left: -500px !important;
+        
+        
+    }
+
+}

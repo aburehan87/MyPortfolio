@@ -947,6 +947,12 @@ footer {
   }
 }
 
+@media (max-width: 480px) {
+  .whatsapp-btn{
+    position: fixed;
+    left: 0;
+  }
+}
 
 /* ------------------------------ */
 /* Floating WhatsApp Button */
