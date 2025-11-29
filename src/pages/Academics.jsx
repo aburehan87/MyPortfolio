@@ -1,6 +1,7 @@
 // src/pages/Academics.jsx
 import React from "react";
 import Skills from "../components/Skills";
+import "./Experience.css";
 import { motion } from "framer-motion";
 import { FaBriefcase } from "react-icons/fa";
 

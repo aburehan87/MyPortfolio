@@ -1,7 +1,8 @@
 .project-bg-light{
-    background-color: #6366F1;
+    background-color: #6366F1 !important;
     color: white !important;
 }
 .btn-visit{
     border: 1px solid #6366F1;
+    
 }
