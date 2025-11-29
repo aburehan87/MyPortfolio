@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import "./ContactForm.css"
 export default function ContactForm() {
   const [result, setResult] = useState("");
 
@@ -8,7 +8,7 @@ export default function ContactForm() {
     setResult("Sending...");
 
     const formData = new FormData(e.target);
-    formData.append("access_key", "033354d3-a344-43df-b3ae-99b942623b82");
+    formData.append("access_key", "06880fa5-4b4b-43e7-8611-40d0dd882732");
     // formData.append("email", "nkodetechnologies@gmail.com"); // receiver email
 
     const res = await fetch("https://api.web3forms.com/submit", {
@@ -34,12 +34,12 @@ export default function ContactForm() {
 
       <form onSubmit={handleSubmit}>
         <div className="row" style={{ marginTop: 12 }}>
-          <input name="name" placeholder="Your name" required />
-          <input name="email" placeholder="Your email" required />
+          <input className=" border-form " name="name" placeholder="Your name" required />
+          <input  className=" border-form " name="email" placeholder="Your email" required />
         </div>
 
         <textarea
-          name="message"
+           className=" border-form " name="message"
           placeholder="Message"
           rows="5"
           style={{ marginTop: 10 }}

@@ -1,5 +1,6 @@
 // src/components/Skills.jsx
 import React from "react";
+import "../pages/Experience.css"
 import { motion } from "framer-motion";
 import {
   FaJava,
@@ -27,7 +28,7 @@ import {
   
 } from "react-icons/si";
 
-export default function Skills({
+export default function   Skills({
   intro = "Full Stack & AI/ML Developer with hands-on backend, API design, and model-building experience.",
 }) {
   const categories = [
@@ -117,7 +118,7 @@ export default function Skills({
         <motion.div variants={container} style={{ display: "grid", gap: 16 }}>
           {categories.map((cat, idx) => (
             <motion.div key={cat.title} variants={item}>
-              <h4 style={{ margin: "6px 0" }}>{cat.title}</h4>
+              <h4 className= "skills-text " style={{ margin: "6px 0" }}>{cat.title}</h4>
 
               <div className="skill-tags" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {cat.skills.map((s, i) => (
