@@ -18,7 +18,7 @@ export default function Home() {
       {/* ================= HERO SECTION ================= */}
       <section className="hero">
         <div className="intro card ">
-          <h2>Hi, I'm Rehan — I build reliable backend systems.</h2>
+          <h2>Hi, I'm Narasimha — I build reliable backend systems.</h2>
 
           <p className="">
             I’m a backend-focused Java developer who enjoys building clean,
@@ -52,6 +52,7 @@ export default function Home() {
               <FaDownload size={14} />
               Download CV
             </a>
+            
           </div>
 
           {/* Quick facts small row */}
