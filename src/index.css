@@ -932,3 +932,98 @@ timeline-item {
     font-size: 24px;
   }
 }
+
+
+/* ===== Mobile overflow fixes (drop this at the end of index.css) ===== */
+
+/* 1) Make fluid background use 100% and avoid scrollbar width issues */
+#fluid-bg {
+  /* prefer full-bleed but avoid 100vw which can include scrollbar */
+  width: 100%;
+  height: 100%;
+  /* keep fixed positioning but ensure no horizontal overflow */
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+/* 2) Prevent the large decorative watermark from causing overflow */
+.deco-img-wrap {
+  position: fixed;
+  right: -80px;
+  bottom: -40px;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: -1;
+  /* make it responsive: never exceed 45% of viewport width on small screens */
+  max-width: 45vw;
+  width: min(560px, 45vw);
+  height: auto;
+  transform: translateX(12px); /* keeps it visually offset but not overflowing */
+}
+
+/* on very small screens, hide or reduce the watermark so it does not collide */
+@media (max-width: 420px) {
+  .deco-img-wrap {
+    right: -36px;
+    bottom: -20px;
+    max-width: 34vw;
+    opacity: 0.035;
+    transform: translateX(6px);
+  }
+}
+
+/* 3) Make featured preview column fluid instead of fixed 360px */
+#project > .card > div:first-child {
+  /* default: prefer 360 but allow shrink to 100% on smaller screens */
+  flex: 1 1 360px;
+  min-width: 0; /* critical: allow flex children to shrink without overflow */
+  max-width: 100%;
+}
+
+/* If you want explicit smaller preview on narrow screens */
+@media (max-width: 980px) {
+  #project > .card {
+    flex-direction: column;
+  }
+  #project > .card > div:first-child {
+    flex-basis: 100%;
+    width: 100%;
+  }
+}
+
+/* 4) Ensure images never overflow and preserve object-fit */
+img, .card img, .project img, .carousel-image, .cert-image, .timeline-image {
+  max-width: 100%;
+  width: 100%;
+  height: auto !important;
+  display: block;
+  object-fit: cover;
+}
+
+/* 5) Avoid scroll triggered by 100vw bars on mobile where possible */
+html, body {
+  overflow-x: hidden; /* last-resort; preferred: fix elements above */
+}
+
+/* 6) Make carousel buttons adapt on tiny screens so they don't overlap content */
+.carousel-btn {
+  min-width: 36px;
+  width: auto;
+  padding: 6px;
+  height: 36px;
+}
+@media (max-width:480px) {
+  .carousel-image {
+    height: 160px; /* lower image height on mobile */
+  }
+}
+
+/* 7) WhatsApp button small-screen adjustments already exist; ensure it is above everything but not causing overflow */
+.whatsapp-btn { will-change: transform; }
+
+/* 8) Utility: fix any flex child overflow by ensuring min-width:0 where used */
+.project, .card, .timeline-item .content, .skills-right, .skills-deco {
+  min-width: 0;
+}
+
