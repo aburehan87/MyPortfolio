@@ -1,39 +1,57 @@
-/* Removed forced !important and made pulse theme aware */
-.skills-pulse{
-  /* default follows theme; when in light mode the :root.light override below will apply */
+/* Keep experience-specific rules; colors follow root variables */
+
+/* Pulse for skills (keeps theme-aware colors) */
+.skills-pulse {
   color: var(--text-on-card);
 }
 
-/* Theme-specific explicit overrides for the visual pulse if needed */
+/* Light/dark explicit overrides */
 :root.light .skills-pulse {
-  color: #111827; /* darker color on light theme */
+  color: #111827;
 }
-
 :root:not(.light) .skills-pulse {
-  color: black; /* keep original look for dark->light contrast if you used it */
+  color: black;
 }
 
-/* mobile adjustments (kept your original responsive tweaks) */
+/* Mobile tweaks — preserved but tightened */
 @media (max-width: 480px) {
-    .content{
-        width: 50%;
-    }
-    
-   .timeline-item{
-        /* kept as-is */
-   }
+  .content {
+    width: 100%;        /* when stacked on phone make content full width in its column */
+    box-sizing: border-box;
+  }
 
-    .timeline-date{
-        display: contents;
-    }
+  .timeline-item {
+    /* stacked layout — no forced weird offsets */
+  }
 
-    .timeline-left{
-        width: 250% !important;
-        margin-left: -20px !important;
-        z-index: 0;
-    }
-    .timeline-right{
-        width: 250% !important;
-        margin-left: -500px !important;
-    }
+  .timeline-date {
+    display: contents;
+  }
+
+  .timeline-left {
+    width: 100% !important;
+    margin-left: 0 !important;
+    z-index: 0;
+  }
+
+  .timeline-right {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* Ensure date badges don't overflow and remain readable */
+.timeline-item .timeline-date {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* If you use explicit left/right wrappers ensure they align to the grid */
+/* This prevents extra user CSS from forcing cards to a different baseline */
+.timeline-left,
+.timeline-right {
+  display: contents; /* leave actual positioning to the main timeline rules */
 }
