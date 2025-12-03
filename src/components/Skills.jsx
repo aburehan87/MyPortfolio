@@ -1,6 +1,6 @@
 // src/components/Skills.jsx
 import React from "react";
-import "../pages/Experience.css"
+import "../pages/Experience.css";
 import { motion } from "framer-motion";
 import {
   FaJava,
@@ -8,8 +8,6 @@ import {
   FaGitAlt,
   FaDocker,
   FaAws,
-
-  
 } from "react-icons/fa";
 import {
   SiSpringboot,
@@ -24,11 +22,9 @@ import {
   SiDotnet,
   SiCplusplus,
   SiCommonworkflowlanguage
-  
-  
 } from "react-icons/si";
 
-export default function   Skills({
+export default function Skills({
   intro = "Full Stack & AI/ML Developer with hands-on backend, API design, and model-building experience.",
 }) {
   const categories = [
@@ -36,8 +32,10 @@ export default function   Skills({
       title: "Languages",
       skills: [
         { name: "Java", icon: <FaJava /> },
-        { name: "Python", icon: <FaPython /> },{name: "C", icon:<SiCommonworkflowlanguage/>},,{name: "C++", icon:<SiCplusplus/>},
-        {name: "DotNet", icon:<SiDotnet/>}
+        { name: "Python", icon: <FaPython /> },
+        { name: "C", icon: <SiCommonworkflowlanguage /> },
+        { name: "C++", icon: <SiCplusplus /> },
+        { name: "DotNet", icon: <SiDotnet /> }
       ]
     },
     {
@@ -77,17 +75,16 @@ export default function   Skills({
   };
   const item = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } };
 
-  // inline hover/glow style applied to pills via style prop + motion
-  // Updated pill style (bright text + accent icon)
+  // Use CSS variables so the component respects :root and :root.light values.
   const pillStyle = {
     display: "inline-flex",
     alignItems: "center",
     gap: 8,
     padding: "8px 12px",
     borderRadius: 999,
-    background: "rgba(99,102,241,0.12)",
+    background: "var(--pill-bg)",          // theme-aware background
     border: "1px solid rgba(99,102,241,0.18)",
-    color: "#ffffff",
+    color: "var(--pill-text)",             // theme-aware text color
     fontSize: 13,
     fontWeight: 600,
     cursor: "default",
@@ -102,9 +99,8 @@ export default function   Skills({
       variants={container}
       style={{ position: "relative" }}
     >
-      {/* small injected style to make pill hover glow not require index.css edits */}
+      {/* tiny component-local rules for the pulse/hover transition */}
       <style>{`
-        /* micro-glow using CSS variables / inline classes (component-local) */
         .skills-pulse {
           transition: box-shadow 200ms ease, transform 180ms ease, background 180ms ease;
         }
@@ -116,12 +112,12 @@ export default function   Skills({
         <motion.p variants={item} className="skills-sub" style={{ margin: 0, color: "var(--muted)" }}>{intro}</motion.p>
 
         <motion.div variants={container} style={{ display: "grid", gap: 16 }}>
-          {categories.map((cat, idx) => (
+          {categories.map((cat) => (
             <motion.div key={cat.title} variants={item}>
-              <h4 className= "skills-text " style={{ margin: "6px 0" }}>{cat.title}</h4>
+              <h4 className="skills-text" style={{ margin: "6px 0" }}>{cat.title}</h4>
 
               <div className="skill-tags" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {cat.skills.map((s, i) => (
+                {cat.skills.map((s) => (
                   <motion.div
                     key={s.name}
                     className="skills-pulse"
@@ -136,12 +132,12 @@ export default function   Skills({
                         alignItems: "center",
                         justifyContent: "center",
                         width: 18,
-                        color: "var(--accent)" // icon color set to accent
+                        color: "var(--accent)" // icon color set to accent variable
                       }}
                     >
                       {s.icon}
                     </span>
-                    <span style={{ color: "#ffffff" /* skill text bright */ }}>{s.name}</span>
+                    <span style={{ color: "var(--pill-text)", marginLeft: 6 }}>{s.name}</span>
                   </motion.div>
                 ))}
               </div>
@@ -150,7 +146,7 @@ export default function   Skills({
         </motion.div>
       </div>
 
-      {/* no right-side image — we keep the layout grid of your index.css but this component only uses left column */}
+      {/* keep right column present for layout consistency but hidden (as before) */}
       <div className="skills-right" style={{ display: "none" }} aria-hidden />
     </motion.section>
   );

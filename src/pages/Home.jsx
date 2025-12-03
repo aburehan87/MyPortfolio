@@ -9,8 +9,6 @@ import img3 from "../assets/CRM3.webp"
 import "./Home.css"
 
 export default function Home() {
- 
- 
   const crmImages =[img1,img2,img3];
 
   return (
@@ -29,30 +27,25 @@ export default function Home() {
 
           {/* Social + CV (Home button removed from here) */}
           <div style={{ marginTop: 14, display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {/* GitHub */}
             <a className="btn-ghost" href="https://github.com/aburehan87/" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <FaGithub size={16} />
               GitHub
             </a>
 
-            {/* LinkedIn */}
             <a className="btn-ghost" href="http://www.linkedin.com/in/rehannasirwaddo" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <FaLinkedin size={16} />
               LinkedIn
             </a>
 
-            {/* Mail */}
             <a className="btn-ghost" href="mailto:aburehanwaddo@gmail.com" style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <FaEnvelope size={16} />
               Mail
             </a>
 
-            {/* Download CV — example using the local upload you made (local path shown below) */}
             <a className="btn" href="https://drive.google.com/file/d/1O0p0V-Uuwm_H7YR-2yRVGlzGfWmRBJS3/view?usp=drive_link" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
               <FaDownload size={14} />
               Download CV
             </a>
-            
           </div>
 
           {/* Quick facts small row */}
@@ -74,17 +67,17 @@ export default function Home() {
             <span className="tag bg-change-white">C</span>
             <span className="tag bg-change-white">C++</span>
             <span className="tag bg-change-white">MySQL</span>
-             <span className="tag bg-change-white">PostgreSQL</span>
+            <span className="tag bg-change-white">PostgreSQL</span>
             <span className="tag bg-change-white">Spring Boot</span>
-             <span className="tag bg-change-white">Pandas</span>
-              <span className="tag bg-change-white">NumPy</span>
-               <span className="tag bg-change-white">TensorFlow</span>
+            <span className="tag bg-change-white">Pandas</span>
+            <span className="tag bg-change-white">NumPy</span>
+            <span className="tag bg-change-white">TensorFlow</span>
             <span className="tag bg-change-white">REST APIs</span>
-           <span className="tag bg-change-white">Git</span>
+            <span className="tag bg-change-white">Git</span>
             <span className="tag bg-change-white">GitHub</span>
-             <span className="tag bg-change-white">Machine Learning</span>
-              <span className="tag bg-change-white">NLP</span>
-               <span className="tag bg-change-white">Data Structures and Algorithms</span>
+            <span className="tag bg-change-white">Machine Learning</span>
+            <span className="tag bg-change-white">NLP</span>
+            <span className="tag bg-change-white">Data Structures and Algorithms</span>
           </div>
         </aside>
       </section>
@@ -131,14 +124,8 @@ export default function Home() {
           <ContactForm />
         </div>
       </section>
+
+      
     </div>
   );
 }
-{/* add this below the intro / hero block */}
-<div className="nav-pills" style={{ marginTop: 18 }}>
-  <div className="nav-pill">🙂 Me</div>
-  <div className="nav-pill">📁 Projects</div>
-  <div className="nav-pill">🧰 Skills</div>
-  <div className="nav-pill">🎉 Fun</div>
-  <div className="nav-pill">📬 Contact</div>
-</div>

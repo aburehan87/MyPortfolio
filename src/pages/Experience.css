@@ -1,51 +1,39 @@
-
+/* Removed forced !important and made pulse theme aware */
 .skills-pulse{
-
-    color: black !important;
+  /* default follows theme; when in light mode the :root.light override below will apply */
+  color: var(--text-on-card);
 }
 
+/* Theme-specific explicit overrides for the visual pulse if needed */
+:root.light .skills-pulse {
+  color: #111827; /* darker color on light theme */
+}
+
+:root:not(.light) .skills-pulse {
+  color: black; /* keep original look for dark->light contrast if you used it */
+}
+
+/* mobile adjustments (kept your original responsive tweaks) */
 @media (max-width: 480px) {
     .content{
-        /* border: 2px solid red !important; */
         width: 50%;
-        /* border: 2px solid red !important; */
-        /* margin-top: 40px; */
-        /* position: relative; */
-        /* margin-bottom: 20px; */
-
-        
     }
     
    .timeline-item{
-        /* border: 2px solid red !important; */
-        /* width: 40%; */
-
+        /* kept as-is */
    }
 
-    
-     .timeline-date{
-        display: flex;
+    .timeline-date{
         display: contents;
-        
-
     }
-
-
 
     .timeline-left{
         width: 250% !important;
         margin-left: -20px !important;
-        /* margin-top: -30px !important; */
-        /* justify-content: baseline; */
-        /* text-align: center; */
         z-index: 0;
-        
     }
     .timeline-right{
         width: 250% !important;
         margin-left: -500px !important;
-        
-        
     }
-
 }
