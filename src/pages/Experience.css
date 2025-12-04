@@ -1,51 +1,57 @@
+/* Keep experience-specific rules; colors follow root variables */
 
-.skills-pulse{
-
-    color: black !important;
+/* Pulse for skills (keeps theme-aware colors) */
+.skills-pulse {
+  color: var(--text-on-card);
 }
 
+/* Light/dark explicit overrides */
+:root.light .skills-pulse {
+  color: #111827;
+}
+:root:not(.light) .skills-pulse {
+  color: black;
+}
+
+/* Mobile tweaks — preserved but tightened */
 @media (max-width: 480px) {
-    .content{
-        /* border: 2px solid red !important; */
-        width: 50%;
-        /* border: 2px solid red !important; */
-        /* margin-top: 40px; */
-        /* position: relative; */
-        /* margin-bottom: 20px; */
+  .content {
+    width: 100%;        /* when stacked on phone make content full width in its column */
+    box-sizing: border-box;
+  }
 
-        
-    }
-    
-   .timeline-item{
-        /* border: 2px solid red !important; */
-        /* width: 40%; */
+  .timeline-item {
+    /* stacked layout — no forced weird offsets */
+  }
 
-   }
+  .timeline-date {
+    display: contents;
+  }
 
-    
-     .timeline-date{
-        display: flex;
-        display: contents;
-        
+  .timeline-left {
+    width: 100% !important;
+    margin-left: 0 !important;
+    z-index: 0;
+  }
 
-    }
+  .timeline-right {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
 
+/* Ensure date badges don't overflow and remain readable */
+.timeline-item .timeline-date {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
 
-
-    .timeline-left{
-        width: 250% !important;
-        margin-left: -20px !important;
-        /* margin-top: -30px !important; */
-        /* justify-content: baseline; */
-        /* text-align: center; */
-        z-index: 0;
-        
-    }
-    .timeline-right{
-        width: 250% !important;
-        margin-left: -500px !important;
-        
-        
-    }
-
+/* If you use explicit left/right wrappers ensure they align to the grid */
+/* This prevents extra user CSS from forcing cards to a different baseline */
+.timeline-left,
+.timeline-right {
+  display: contents; /* leave actual positioning to the main timeline rules */
 }

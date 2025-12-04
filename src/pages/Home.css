@@ -1,4 +1,26 @@
+/* Theme-aware "bg-change-white" for Home skills tags
+   Uses variables defined in index.css so it adapts to :root and :root.light */
 .bg-change-white{
-    background-color: #6366F1;
-    color: white !important;
+    background-color: var(--pill-bg);
+    color: var(--pill-text) !important;
+    border: 1px solid var(--card-border);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    display: inline-block;
 }
+
+/* Small tweak so the inline .tag + .bg-change-white spacing matches your other tag styles */
+.tag.bg-change-white {
+  display: inline-block;
+  margin: 0;
+}
+
+/* Optional: make pills slightly lift on hover (keeps behavior consistent with Skills component) */
+.tag.bg-change-white:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.08);
+}
+
+/* If you prefer using only .tag everywhere, you can remove the bg-change-white class
+   and rely on .tag styling from index.css which already uses theme variables. */

@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 
+/* ---------- Theme overlay & contrast variables ---------- */
+/* Keep the old variables but add a few overlay/text variables to handle light theme properly */
 :root {
   --bg: #0f1724;
   --card: #0b1220;
@@ -15,8 +17,21 @@
   --gap: 20px;
   --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   --card-hover-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
+
+  /* NEW: overlays and on-card text (dark theme defaults) */
+  --overlay: rgba(255, 255, 255, 0.06);
+  --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text-on-card: #e6eef8;
+  --pill-text: #dfd3d3;
+  --pill-bg: rgba(99, 102, 241, 0.09);
+  --timeline-line: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0.06) 45%,
+      rgba(255, 255, 255, 0.03) 100%);
 }
 
+/* light theme overrides */
 :root.light {
   --bg: #f8fafc;
   --card: #ffffff;
@@ -30,7 +45,72 @@
   --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto;
   --card-hover-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
 
+  /* NEW: light mode contrast */
+  --overlay: rgba(0, 0, 0, 0.05);
+  --card-bg: linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02));
+  --card-border: rgba(0, 0, 0, 0.06);
+  --text-on-card: #111827;
+  --pill-text: #1f2937;
+  --pill-bg: rgba(99, 102, 241, 0.06);
+  --timeline-line: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.05) 45%,
+      rgba(0, 0, 0, 0.02) 100%);
 }
+
+/* Cursor appearance variables (theme-aware) */
+:root {
+  --cursor-border: rgba(255, 255, 255, 0.14);
+  --cursor-bg: rgba(255, 255, 255, 0.08);
+  --cursor-blend: difference;
+  /* dark-theme style keeps the invert effect */
+}
+
+:root.light {
+  --cursor-border: rgba(0, 0, 0, 0.12);
+  --cursor-bg: rgba(0, 0, 0, 0.06);
+  --cursor-blend: normal;
+  /* disable difference on light theme so text doesn't vanish */
+}
+:root.light .timeline-item .content,
+:root.light .timeline-item .content h3,
+:root.light .timeline-item .content p,
+:root.light .timeline-item .content .timeline-designation {
+  /* use explicit light-card background + readable text color */
+  background: var(--card) !important;        /* white card in light mode */
+  color: var(--text-on-card) !important;     /* dark readable text (#111827) */
+  border-color: var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important; /* subtle separation */
+}
+
+/* defensive: stop blending/inversion which can make items invisible */
+:root.light .timeline-item,
+:root.light .timeline-item * {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  color: inherit !important;
+}
+
+/* ensure children are not accidentally hidden */
+:root.light .timeline-item .content > * {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* If any element uses filter or backdrop to invert colors, neutralize it inside timeline */
+:root.light .timeline-item .content {
+  -webkit-filter: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* small-screen precaution — ensure timeline image/text remain visible on mobile */
+@media (max-width: 980px) {
+  :root.light .timeline-item .content {
+    padding: 14px !important;
+  }
+}
+
 
 /* ---------- base layout ---------- */
 * {
@@ -51,8 +131,6 @@ body {
 
 body {
   font-family: var(--sans);
-  /* background: radial-gradient(circle at top left, #1b2235, #0f1724 60%); */
-  /* color: #e6eef8; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 24px;
@@ -73,33 +151,7 @@ body {
   font-size: 20px;
 }
 
-/* LIGHT THEME BELOW CODE */
-/* :root {
-
-  --bg: #f5f4f7;         
-  --card: #ffffffea;      
-  --muted: #5f6570;      
-  --accent: #6366f1;     
-  --glass: rgba(255, 255, 255, 0.45);
-  --round: 12px;
-  --maxw: 1100px;
-  --gap: 20px;
-  --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --card-hover-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-}
-
-
-
-body {
-  font-family: var(--sans);
-  background: radial-gradient(circle at top left, #fafafa, #f5f4f7 60%);
-  color: #1a1a1a;       
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding: 24px;
-  transition: background-color 250ms ease;
-} */
-
+/* ---------- layout / header ---------- */
 .app-root {
   display: flex;
   flex-direction: column;
@@ -157,7 +209,6 @@ nav.topnav {
   display: flex;
   gap: 12px;
   align-items: center;
-  /* visibility: visible; */
 }
 
 nav.topnav a {
@@ -171,9 +222,10 @@ nav.topnav a {
   align-items: center;
 }
 
+/* ===== FIX: theme-aware hover so text doesn't vanish in light mode ===== */
 nav.topnav a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-on-card);
+  background: linear-gradient(180deg, var(--overlay), transparent);
   transform: translateY(-3px);
 }
 
@@ -191,9 +243,10 @@ nav.topnav a:hover {
   transition: transform 160ms ease, background 160ms ease;
 }
 
+/* ===== FIX: theme-aware ghost hover (was white rgba causing invisibility in light mode) ===== */
 .btn-ghost:hover {
   transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(180deg, var(--overlay), transparent);
 }
 
 /* ---------- Hero ---------- */
@@ -204,14 +257,29 @@ nav.topnav a:hover {
   align-items: start;
 }
 
+/* Use theme-aware card background & color */
 .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  background: var(--card-bg);
   border-radius: var(--round);
   padding: 22px;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: transform 200ms ease, box-shadow 200ms ease, background 180ms ease;
   will-change: transform;
   transform: translateZ(0);
+  border: 1px solid var(--card-border);
+  color: var(--text-on-card);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
+   overflow-x: hidden;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  background: linear-gradient(180deg, var(--overlay), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.55);
 }
 
 .intro h2 {
@@ -225,13 +293,7 @@ nav.topnav a:hover {
   line-height: 1.6;
 }
 
-/* keep logo subtle on hover (no layout change) */
-.brand a:hover .logo {
-  transform: translateY(-3px) scale(1.02);
-}
-
 /* ---------- Buttons (safe interactions) ---------- */
-/* use inline-flex so transforms do not reflow siblings */
 .btn,
 .btn-ghost {
   display: inline-flex;
@@ -314,21 +376,34 @@ nav.topnav a:hover {
   /* allow stacking on small screens */
 }
 
+/*  NEWLY ADDED CODE HERE:  */
 #project>.card>div:first-child {
+  /* desktop preferred width, but allow shrinking */
   flex: 0 0 360px;
-  /* fixed preview column on wide screens */
+  min-width: 0;
+  /* crucial so flex children can shrink */
   max-width: 100%;
-  min-width: 220px;
 }
 
-/* ensure images do not overflow or cause reflow */
-.card img,
-.project img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+/* On narrow screens stack the preview + content vertically */
+@media (max-width: 700px) {
+  #project>.card {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #project>.card>div:first-child {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  /* slightly reduce card padding on small phones */
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
 }
+
 
 /* ---------- Two column area ---------- */
 .two-col {
@@ -391,13 +466,6 @@ footer {
   color: var(--muted);
 }
 
-/* ---------- Hover & interaction safety ---------- */
-/* lighten effect for all .card hover but do not cause layout shift */
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--card-hover-shadow);
-}
-
 /* ---------- responsive ---------- */
 @media (max-width: 980px) {
   .hero {
@@ -444,8 +512,21 @@ footer {
 #custom-cursor {
   pointer-events: none;
   z-index: 9999;
-  mix-blend-mode: difference;
+  mix-blend-mode: var(--cursor-blend);
+  /* fallback appearance */
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cursor-bg);
+  border: 1px solid var(--cursor-border);
+  transform: translate(-50%, -50%);
 }
+
+/* ===== FIX: explicitly ensure cursor won't invert text in light theme ===== */
+:root.light #custom-cursor {
+  mix-blend-mode: normal;
+}
+
 
 /* ripple element */
 .cursor-ripple {
@@ -460,7 +541,15 @@ footer {
   background: rgba(99, 102, 241, 0.06);
   animation: cursorRipple 700ms ease-out forwards;
   mix-blend-mode: normal;
+  /* ripple already used normal in your file — keep it */
 }
+
+/* optional: make ripple less intense in light theme */
+:root.light .cursor-ripple {
+  border-color: rgba(99, 102, 241, 0.6);
+  background: rgba(99, 102, 241, 0.04);
+}
+
 
 @keyframes cursorRipple {
   0% {
@@ -479,164 +568,23 @@ footer {
   }
 }
 
-
-/* small fallback style for the cursor element (JS also styles it inline) */
-#custom-cursor {
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  /* the JS creates size/appearance; this is a safe fallback */
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  transform: translate(-50%, -50%);
-}
-
-/* full-screen canvas for ripples */
-#cursor-splash-canvas {
-  width: 100vw;
-  height: 100vh;
-  display: block;
-  pointer-events: none;
-  z-index: 9998;
-}
-
-/* Projects carousel styles */
-.carousel {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-}
-
-.carousel-viewport {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.carousel-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
-}
-
-/* buttons */
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(20, 20, 20, 0.45);
-  color: white;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: transform 160ms ease, background 160ms ease;
-}
-
-.carousel-btn:hover {
-  transform: translateY(-50%) scale(1.04);
-  background: rgba(20, 20, 20, 0.6);
-}
-
-.carousel-prev {
-  left: 8px;
-}
-
-.carousel-next {
-  right: 8px;
-}
-
-/* dots */
-.carousel-dots {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 12;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.dot.active {
-  background: var(--accent);
-  transform: scale(1.1);
-}
-
-
-/* Certifications single-image preview */
-.cert-preview {
-  width: 100%;
-  height: 220px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.03);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
-}
-
-.cert-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* small responsiveness */
-@media (max-width: 980px) {
-  .cert-preview {
-    height: 180px;
-  }
-}
-
 /* ---------- Timeline Section (Academics/Experience style) ---------- */
-/* replace previous timeline styles with this block for better contrast on dark bg */
-
 .timeline-wrapper {
   position: relative;
   padding-left: 44px;
   margin-left: 8px;
 }
 
-/* stronger vertical line: gradient so it shows on radial/dark backgrounds */
+/* use variable timeline line so it adapts to theme */
 .timeline-wrapper::before {
   content: "";
   position: absolute;
   left: 56px;
-  /* shift to sit next to the dot column */
   top: 8px;
   bottom: 8px;
   width: 3px;
   border-radius: 3px;
-  background: linear-gradient(180deg,
-      rgba(255, 255, 255, 0.10) 0%,
-      rgba(255, 255, 255, 0.06) 45%,
-      rgba(255, 255, 255, 0.03) 100%);
+  background: var(--timeline-line);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
@@ -653,7 +601,6 @@ footer {
 .timeline-item .dot {
   position: absolute;
   left: 46px;
-  /* aligns dot with the vertical line */
   top: 18px;
   width: 14px;
   height: 14px;
@@ -664,28 +611,28 @@ footer {
   transform: translateX(-50%);
 }
 
-/* create subtle divider between items (helps visual separation) */
+/* divider between items */
 .timeline-item:not(:last-child) {
   border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
   margin-bottom: 26px;
   padding-bottom: 22px;
 }
 
-/* content card */
+/* content card uses theme variables */
 .timeline-item .content {
-  background: linear-gradient(180deg, rgba(11, 18, 32, 0.70), rgba(11, 18, 32, 0.55));
+  background: var(--card-bg);
   padding: 16px;
   border-radius: 12px;
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
-  color: #e6eef8;
+  color: var(--text-on-card);
 }
 
 /* title & meta */
 .timeline-item .content h3 {
   margin: 0 0 6px;
-  color: #fff;
+  color: var(--text-on-card);
   font-size: 18px;
 }
 
@@ -745,12 +692,21 @@ footer {
   .timeline-image-wrap {
     flex: 0 0 100%;
     max-width: 100%;
-    height: 180px;
+    height: auto;            /* let content decide height */
+    max-height: 42vh;        /* cap so it's not insanely tall on phones */
     margin-left: 0;
     margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .timeline-image {
+    width: 100%;
+    height: auto;
+    max-height: 42vh;
+    object-fit: contain;
+    display: block;
   }
 }
-
 
 /* ---------- Skills section (matches pastel theme) ---------- */
 .skills-section {
@@ -762,30 +718,30 @@ footer {
   margin-bottom: 18px;
 }
 
-.skills-left h2 {
+skills-left h2 {
   margin-bottom: 6px;
 }
 
-.skills-sub {
+skills-sub {
   color: var(--muted);
   margin-bottom: 10px;
 }
 
-.skill-tags {
-  color: black !important;
+/* don't hard-force black — use theme-friendly colors */
+skill-tags {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 6px;
+  color: inherit;
 }
 
 .pill {
   display: inline-block;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(99, 102, 241, 0.09);
-  /* soft pastel accent */
-  color: #dfd3d3;
+  background: var(--pill-bg);
+  color: var(--pill-text);
   font-size: 13px;
   border: 1px solid rgba(99, 102, 241, 0.08);
 }
@@ -816,7 +772,6 @@ footer {
     grid-template-columns: 1fr;
   }
 
-
   .skills-right {
     order: 2;
   }
@@ -826,26 +781,14 @@ footer {
 .timeline-designation {
   font-weight: 600;
   font-style: italic;
-  color: #ffffff;
+  color: var(--text-on-card);
   opacity: 0.95;
   font-size: 15px;
   line-height: 1.3;
 }
 
-/* adjust content spacing so designation shows properly */
-.timeline-item .content {
-  /* keep your existing content styles, plus ensure min-height and readable contrast */
-  background: linear-gradient(180deg, rgba(11, 18, 32, 0.70), rgba(11, 18, 32, 0.55));
-  padding: 18px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
-  color: #e6eef8;
-}
-
 /* slightly increase left padding so the designation doesn't collide */
-.timeline-item {
+timeline-item {
   padding-left: 16px;
 }
 
@@ -859,7 +802,6 @@ footer {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
-
 /* ---------- Fluid BG canvas ---------- */
 #fluid-bg {
   position: fixed;
@@ -868,31 +810,8 @@ footer {
   width: 100vw;
   height: 100vh;
   z-index: -2;
-  /* behind content */
   pointer-events: none;
   filter: saturate(115%) contrast(105%);
-}
-
-/* ---------- Glass card update ---------- */
-/* Replace or override earlier .card styles with this glassy look */
-.card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-  border-radius: 16px;
-  padding: 22px;
-  transition: transform 200ms ease, box-shadow 200ms ease, background 180ms ease;
-  will-change: transform;
-  transform: translateZ(0);
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
-  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.55);
 }
 
 /* ---------- Rounded pill nav used for Me / Projects / Skills / Fun / Contact ---------- */
@@ -928,40 +847,152 @@ footer {
 /* subtle tag update to match glass */
 .tag {
   background: rgba(255, 255, 255, 0.04);
-  color: #e6eef8;
+  color: var(--text-on-card);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* center hero and add spacing for large hero */
-.hero {
+/* ---------- Projects carousel styles (REVERTED ARROW STYLING) ---------- */
+/* Reverted to light, pill-like arrows so they match your previous UI (seen in screenshot).
+   Kept theme adaptability (light/dark still works because buttons are light-on-dark). */
+
+.carousel {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
   align-items: center;
-  padding-top: 28px;
-  padding-bottom: 28px;
+  justify-content: center;
+  min-height: auto;
+  padding: 12px;
 }
 
-/* small responsive tweak to keep pills readable */
-@media (max-width: 680px) {
-  .nav-pill {
-    padding: 10px 14px;
-    font-size: 14px;
+.carousel-viewport {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.carousel-image,
+.cert-image,
+.card img,
+.project img,
+.timeline-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px;
+  max-height: 54vh;
+  /* prevents images from getting too tall on phones */
+}
+
+@media (max-width: 420px) {
+  .carousel-image {
+    max-height: 42vh;
   }
 }
 
-@media (max-width: 480px) {
-  .whatsapp-btn{
-    position: fixed;
-    left: 0;
-  }
+
+/* Reverted arrow/button style: light rounded rectangle with subtle border and dark icon */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 245, 0.95));
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 40px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 120ms ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  padding: 0;
 }
 
-/* ------------------------------ */
-/* Floating WhatsApp Button */
+/* Slight hover lift and darker inner icon for affordance */
+.carousel-btn:hover {
+  transform: translateY(-50%) scale(1.04);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  background: linear-gradient(180deg, rgba(245, 245, 245, 1), rgba(235, 235, 235, 0.98));
+}
+
+/* Positioning helpers */
+.carousel-prev {
+  left: 8px;
+}
+
+.carousel-next {
+  right: 8px;
+}
+
+/* Dots unchanged (keeps your original design) */
+.carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 12;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dot.active {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+
+/* Certifications single-image preview - responsive & uncropped */
+.cert-preview {
+  width: 100%;
+  height: auto;           /* let the content determine the height */
+  max-height: 48vh;       /* cap visual height to viewport fraction on small devices */
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
+.cert-image {
+  width: 100%;
+  height: auto;
+  max-height: 48vh;
+  object-fit: contain;    /* show the whole certificate */
+  display: block;
+}
+@media (max-width: 420px) {
+  .cert-preview { max-height: 42vh; }
+  .cert-image   { max-height: 42vh; }
+}
+
+
+/* ---------- Floating WhatsApp Button (RESTORED) ---------- */
 .whatsapp-btn {
   position: fixed;
   bottom: 24px;
   right: 24px;
   background-color: #25D366;
-  /* WhatsApp green */
+  /* original bright WhatsApp green */
   color: white;
   width: 55px;
   height: 55px;
@@ -972,80 +1003,271 @@ footer {
   font-size: 26px;
   cursor: pointer;
   z-index: 9999;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  /* keep it above most elements */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+/* hover/tap affordance */
 .whatsapp-btn:hover {
-  transform: scale(1.1);
-  background-color: #1ebe5d;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
 }
 
-/* center vertical line */
-.timeline-wrapper {
-  position: relative;
-  margin-top: 40px;
-  padding: 20px 0;
+/* small-screen tweak so it never collides with system bars */
+@media (max-width: 480px) {
+  .whatsapp-btn {
+    bottom: 16px;
+    right: 12px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
 }
 
-.timeline-wrapper::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateX(-50%);
+/* fallback: ensure project content can grow if mobile chrome reflows */
+.card { min-height: 0; }
+.project-content { min-height: 0; }
+
+
+/* ===========================
+   Minimal fixes (append only)
+   - Fix: project description cut on real devices
+   - Fix: certificate cropped / half-visible on some mobiles
+   - Non-invasive: does NOT change skills section
+   =========================== */
+
+/* Allow project content to shrink/expand properly on narrow viewports */
+.project-content {
+  /* already exists in project css, reinforce safe shrink behavior */
+  min-width: 0 !important;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
-/* card wrappers */
-.timeline-item {
-  position: relative;
-  width: 100%;
-  margin: 50px 0;
+/* Ensure paragraphs in project cards wrap (avoid accidental truncation) */
+.project-content p,
+.card p,
+.project p {
+  white-space: normal !important;
+  display: block;
+  margin: 0 0 8px;
 }
 
-/* left card */
-.timeline-left .content {
-  width: 42%;
-  margin-left: 0;
-  margin-right: auto;
+/* Make sure card / project containers don't clip vertically on mobile */
+.card,
+.project {
+  overflow-x: hidden;   /* keep horizontal clipped */
+  overflow-y: visible;  /* allow vertical growth when content needs more height */
+  min-height: 0;        /* defensive (mobile Chrome) */
 }
 
-/* right card */
-.timeline-right .content {
-  width: 42%;
-  margin-left: auto;
-  margin-right: 0;
+/* Force certificate & timeline preview to show whole image on small screens */
+.timeline-image,
+.cert-image {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 48vh !important; /* cap by viewport fraction so it doesn't overflow */
 }
 
-/* CENTER DATE ON TIMELINE */
-.timeline-date {
-  position: absolute;
-  left: 50%;
-  top: -8px;
-  transform: translateX(-50%);
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(4px);
-  border-radius: 6px;
-  font-size: 14px;
-  color: #cdd6f4;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  white-space: nowrap;
+/* Extra defensive rule: if timeline preview is in a flex column, let it grow */
+.timeline-image-wrap,
+.cert-preview {
+  flex: 1 1 auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
-/* dot */
-.timeline-dot {
-  width: 16px;
-  height: 16px;
-  background: #6366f1;
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: 8px;
-  transform: translateX(-50%);
-  z-index: 5;
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+/* Small-screen tweak — ensure carousel doesn't force overly narrow content */
+@media (max-width: 420px) {
+  .carousel,
+  .carousel-viewport {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .project-carousel {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  /* give project-content full width under the carousel on very small screens */
+  .project-content {
+    flex: 1 1 100% !important;
+  }
+}
+
+/* ----------------------------
+   Alternating timeline: LEFT / RIGHT (replace previous timeline-alternating rules)
+   Paste this at the end of index.css (replace earlier alternating timeline blocks)
+   ---------------------------- */
+@media (min-width: 981px) {
+  /* wrapper: center the vertical line */
+  .timeline-wrapper {
+    position: relative;
+    padding: 40px 0;
+    box-sizing: border-box;
+  }
+
+  .timeline-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--timeline-line);
+    z-index: 1;
+  }
+
+  /* row layout for each item */
+  .timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between; /* allows content to hug sides */
+    gap: 20px;
+    padding: 28px 0;
+    width: 100%;
+    box-sizing: border-box;
+    clear: both;
+  }
+
+  /* two columns: content and optional image each take about 45% */
+  .timeline-item .content,
+  .timeline-item .timeline-image-wrap {
+    width: 45%;
+    max-width: 45%;
+    box-sizing: border-box;
+  }
+
+  /* make sure inner card uses full width of its column */
+  .timeline-item .content .card,
+  .timeline-item .content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* center dot aligned to vertical line */
+  .timeline-item .dot {
+    position: absolute;
+    left: 50%;
+    top: 24px; /* controls vertical offset of the dot */
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  /* ODD items: content on the LEFT, image on the RIGHT */
+  .timeline-item:nth-child(odd) {
+    flex-direction: row;
+  }
+  .timeline-item:nth-child(odd) .content {
+    order: 0;
+    margin-right: auto; /* push content to left */
+    text-align: left;
+  }
+  .timeline-item:nth-child(odd) .timeline-image-wrap {
+    order: 1;
+  }
+
+  /* EVEN items: content on the RIGHT, image on the LEFT (mirrored) */
+  .timeline-item:nth-child(even) {
+    flex-direction: row;
+  }
+  .timeline-item:nth-child(even) .content {
+    order: 1;
+    margin-left: auto;  /* push content to right */
+    text-align: left;   /* keep text left-aligned inside card */
+  }
+  .timeline-item:nth-child(even) .timeline-image-wrap {
+    order: 0;
+  }
+
+  /* DATE/WHEN placement: anchor to the card's top and flush to page edge */
+  .timeline-item .date,
+  .timeline-item .when,
+  .timeline-item .timeline-date {
+    position: absolute;
+    top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+    white-space: nowrap;
+    z-index: 6;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* odd = date on the left gutter */
+  .timeline-item:nth-child(odd) .date,
+  .timeline-item:nth-child(odd) .when,
+  .timeline-item:nth-child(odd) .timeline-date {
+    left: 8px;   /* flush to left gutter (tweak if you want more inset) */
+    transform: none;
+    text-align: left;
+  }
+
+  /* even = date on the right gutter */
+  .timeline-item:nth-child(even) .date,
+  .timeline-item:nth-child(even) .when,
+  .timeline-item:nth-child(even) .timeline-date {
+    right: 8px;  /* flush to right gutter */
+    transform: none;
+    text-align: right;
+  }
+
+  /* ensure center line sits under content (not over it) */
+  .timeline-wrapper::before { z-index: 1; }
+
+  /* safety: limit image sizes inside their column */
+  .timeline-item .timeline-image-wrap,
+  .timeline-item .timeline-image-wrap img,
+  .timeline-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+/* keep stacked layout for narrower screens (original behavior) */
+@media (max-width: 980px) {
+  .timeline-wrapper::before {
+    left: 24px;
+    transform: none;
+    width: 2px;
+    z-index: 1;
+  }
+
+  .timeline-item {
+    display: block;
+    padding: 10px 6px 18px 10px;
+  }
+
+  .timeline-item .dot {
+    left: 24px;
+    transform: translateX(-50%);
+    top: 10px;
+  }
+
+  .timeline-item .content,
+  .timeline-item .timeline-image-wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .timeline-item .date,
+  .timeline-item .when,
+  .timeline-item .timeline-date {
+    position: static;
+    transform: none;
+    margin-bottom: 6px;
+    display: inline-block;
+    pointer-events: auto;
+  }
 }
