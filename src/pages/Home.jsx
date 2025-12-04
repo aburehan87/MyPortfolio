@@ -42,7 +42,7 @@ export default function Home() {
               Mail
             </a>
 
-            <a className="btn" href="https://drive.google.com/file/d/1O0p0V-Uuwm_H7YR-2yRVGlzGfWmRBJS3/view?usp=drive_link" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <a className="btn" href="https://drive.google.com/file/d/1zXff6eA0HtoLZOzZZ6WQJNMw5ooupFzI/view?usp=sharing" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
               <FaDownload size={14} />
               Download CV
             </a>
