@@ -72,6 +72,44 @@
   --cursor-blend: normal;
   /* disable difference on light theme so text doesn't vanish */
 }
+:root.light .timeline-item .content,
+:root.light .timeline-item .content h3,
+:root.light .timeline-item .content p,
+:root.light .timeline-item .content .timeline-designation {
+  /* use explicit light-card background + readable text color */
+  background: var(--card) !important;        /* white card in light mode */
+  color: var(--text-on-card) !important;     /* dark readable text (#111827) */
+  border-color: var(--card-border) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important; /* subtle separation */
+}
+
+/* defensive: stop blending/inversion which can make items invisible */
+:root.light .timeline-item,
+:root.light .timeline-item * {
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  color: inherit !important;
+}
+
+/* ensure children are not accidentally hidden */
+:root.light .timeline-item .content > * {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* If any element uses filter or backdrop to invert colors, neutralize it inside timeline */
+:root.light .timeline-item .content {
+  -webkit-filter: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* small-screen precaution — ensure timeline image/text remain visible on mobile */
+@media (max-width: 980px) {
+  :root.light .timeline-item .content {
+    padding: 14px !important;
+  }
+}
 
 
 /* ---------- base layout ---------- */
@@ -1059,5 +1097,177 @@ timeline-item {
   /* give project-content full width under the carousel on very small screens */
   .project-content {
     flex: 1 1 100% !important;
+  }
+}
+
+/* ----------------------------
+   Alternating timeline: LEFT / RIGHT (replace previous timeline-alternating rules)
+   Paste this at the end of index.css (replace earlier alternating timeline blocks)
+   ---------------------------- */
+@media (min-width: 981px) {
+  /* wrapper: center the vertical line */
+  .timeline-wrapper {
+    position: relative;
+    padding: 40px 0;
+    box-sizing: border-box;
+  }
+
+  .timeline-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--timeline-line);
+    z-index: 1;
+  }
+
+  /* row layout for each item */
+  .timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between; /* allows content to hug sides */
+    gap: 20px;
+    padding: 28px 0;
+    width: 100%;
+    box-sizing: border-box;
+    clear: both;
+  }
+
+  /* two columns: content and optional image each take about 45% */
+  .timeline-item .content,
+  .timeline-item .timeline-image-wrap {
+    width: 45%;
+    max-width: 45%;
+    box-sizing: border-box;
+  }
+
+  /* make sure inner card uses full width of its column */
+  .timeline-item .content .card,
+  .timeline-item .content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* center dot aligned to vertical line */
+  .timeline-item .dot {
+    position: absolute;
+    left: 50%;
+    top: 24px; /* controls vertical offset of the dot */
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+
+  /* ODD items: content on the LEFT, image on the RIGHT */
+  .timeline-item:nth-child(odd) {
+    flex-direction: row;
+  }
+  .timeline-item:nth-child(odd) .content {
+    order: 0;
+    margin-right: auto; /* push content to left */
+    text-align: left;
+  }
+  .timeline-item:nth-child(odd) .timeline-image-wrap {
+    order: 1;
+  }
+
+  /* EVEN items: content on the RIGHT, image on the LEFT (mirrored) */
+  .timeline-item:nth-child(even) {
+    flex-direction: row;
+  }
+  .timeline-item:nth-child(even) .content {
+    order: 1;
+    margin-left: auto;  /* push content to right */
+    text-align: left;   /* keep text left-aligned inside card */
+  }
+  .timeline-item:nth-child(even) .timeline-image-wrap {
+    order: 0;
+  }
+
+  /* DATE/WHEN placement: anchor to the card's top and flush to page edge */
+  .timeline-item .date,
+  .timeline-item .when,
+  .timeline-item .timeline-date {
+    position: absolute;
+    top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+    white-space: nowrap;
+    z-index: 6;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* odd = date on the left gutter */
+  .timeline-item:nth-child(odd) .date,
+  .timeline-item:nth-child(odd) .when,
+  .timeline-item:nth-child(odd) .timeline-date {
+    left: 8px;   /* flush to left gutter (tweak if you want more inset) */
+    transform: none;
+    text-align: left;
+  }
+
+  /* even = date on the right gutter */
+  .timeline-item:nth-child(even) .date,
+  .timeline-item:nth-child(even) .when,
+  .timeline-item:nth-child(even) .timeline-date {
+    right: 8px;  /* flush to right gutter */
+    transform: none;
+    text-align: right;
+  }
+
+  /* ensure center line sits under content (not over it) */
+  .timeline-wrapper::before { z-index: 1; }
+
+  /* safety: limit image sizes inside their column */
+  .timeline-item .timeline-image-wrap,
+  .timeline-item .timeline-image-wrap img,
+  .timeline-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+/* keep stacked layout for narrower screens (original behavior) */
+@media (max-width: 980px) {
+  .timeline-wrapper::before {
+    left: 24px;
+    transform: none;
+    width: 2px;
+    z-index: 1;
+  }
+
+  .timeline-item {
+    display: block;
+    padding: 10px 6px 18px 10px;
+  }
+
+  .timeline-item .dot {
+    left: 24px;
+    transform: translateX(-50%);
+    top: 10px;
+  }
+
+  .timeline-item .content,
+  .timeline-item .timeline-image-wrap {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .timeline-item .date,
+  .timeline-item .when,
+  .timeline-item .timeline-date {
+    position: static;
+    transform: none;
+    margin-bottom: 6px;
+    display: inline-block;
+    pointer-events: auto;
   }
 }
