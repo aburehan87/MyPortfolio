@@ -232,7 +232,9 @@ nav.topnav a:hover {
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
-  overflow: hidden;
+   overflow-x: hidden;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
 
 }
 
@@ -335,21 +337,24 @@ nav.topnav a:hover {
   flex-wrap: wrap;
   /* allow stacking on small screens */
 }
+
 /*  NEWLY ADDED CODE HERE:  */
-#project > .card > div:first-child {
+#project>.card>div:first-child {
   /* desktop preferred width, but allow shrinking */
   flex: 0 0 360px;
-  min-width: 0;    /* crucial so flex children can shrink */
+  min-width: 0;
+  /* crucial so flex children can shrink */
   max-width: 100%;
 }
 
 /* On narrow screens stack the preview + content vertically */
 @media (max-width: 700px) {
-  #project > .card {
+  #project>.card {
     flex-direction: column;
     gap: 12px;
   }
-  #project > .card > div:first-child {
+
+  #project>.card>div:first-child {
     flex: 1 1 100%;
     min-width: 0;
   }
@@ -497,13 +502,14 @@ footer {
   border: 2px solid rgba(99, 102, 241, 0.9);
   background: rgba(99, 102, 241, 0.06);
   animation: cursorRipple 700ms ease-out forwards;
-  mix-blend-mode: normal; /* ripple already used normal in your file — keep it */
+  mix-blend-mode: normal;
+  /* ripple already used normal in your file — keep it */
 }
 
 /* optional: make ripple less intense in light theme */
 :root.light .cursor-ripple {
-  border-color: rgba(99,102,241,0.6);
-  background: rgba(99,102,241,0.04);
+  border-color: rgba(99, 102, 241, 0.6);
+  background: rgba(99, 102, 241, 0.04);
 }
 
 
@@ -648,9 +654,19 @@ footer {
   .timeline-image-wrap {
     flex: 0 0 100%;
     max-width: 100%;
-    height: 180px;
+    height: auto;            /* let content decide height */
+    max-height: 42vh;        /* cap so it's not insanely tall on phones */
     margin-left: 0;
     margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .timeline-image {
+    width: 100%;
+    height: auto;
+    max-height: 42vh;
+    object-fit: contain;
+    display: block;
   }
 }
 
@@ -830,10 +846,14 @@ timeline-item {
   display: block;
   object-fit: cover;
   border-radius: 10px;
-  max-height: 54vh; /* prevents images from getting too tall on phones */
+  max-height: 54vh;
+  /* prevents images from getting too tall on phones */
 }
+
 @media (max-width: 420px) {
-  .carousel-image { max-height: 42vh; }
+  .carousel-image {
+    max-height: 42vh;
+  }
 }
 
 
@@ -842,9 +862,9 @@ timeline-item {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,245,245,0.95));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 245, 0.95));
   color: #111;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   width: 40px;
   height: 36px;
   border-radius: 8px;
@@ -854,15 +874,15 @@ timeline-item {
   cursor: pointer;
   z-index: 10;
   transition: transform 140ms ease, box-shadow 140ms ease, background 120ms ease;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
   padding: 0;
 }
 
 /* Slight hover lift and darker inner icon for affordance */
 .carousel-btn:hover {
   transform: translateY(-50%) scale(1.04);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
-  background: linear-gradient(180deg, rgba(245,245,245,1), rgba(235,235,235,0.98));
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  background: linear-gradient(180deg, rgba(245, 245, 245, 1), rgba(235, 235, 235, 0.98));
 }
 
 /* Positioning helpers */
@@ -900,10 +920,12 @@ timeline-item {
   transform: scale(1.1);
 }
 
-/* Certifications single-image preview kept as before */
+
+/* Certifications single-image preview - responsive & uncropped */
 .cert-preview {
   width: 100%;
-  height: 220px;
+  height: auto;           /* let the content determine the height */
+  max-height: 48vh;       /* cap visual height to viewport fraction on small devices */
   border-radius: 10px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.03);
@@ -915,17 +937,24 @@ timeline-item {
 
 .cert-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 48vh;
+  object-fit: contain;    /* show the whole certificate */
   display: block;
 }
+@media (max-width: 420px) {
+  .cert-preview { max-height: 42vh; }
+  .cert-image   { max-height: 42vh; }
+}
+
 
 /* ---------- Floating WhatsApp Button (RESTORED) ---------- */
 .whatsapp-btn {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background-color: #25D366; /* original bright WhatsApp green */
+  background-color: #25D366;
+  /* original bright WhatsApp green */
   color: white;
   width: 55px;
   height: 55px;
@@ -935,7 +964,8 @@ timeline-item {
   align-items: center;
   font-size: 26px;
   cursor: pointer;
-  z-index: 9999; /* keep it above most elements */
+  z-index: 9999;
+  /* keep it above most elements */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -957,4 +987,77 @@ timeline-item {
   }
 }
 
+/* fallback: ensure project content can grow if mobile chrome reflows */
+.card { min-height: 0; }
+.project-content { min-height: 0; }
 
+
+/* ===========================
+   Minimal fixes (append only)
+   - Fix: project description cut on real devices
+   - Fix: certificate cropped / half-visible on some mobiles
+   - Non-invasive: does NOT change skills section
+   =========================== */
+
+/* Allow project content to shrink/expand properly on narrow viewports */
+.project-content {
+  /* already exists in project css, reinforce safe shrink behavior */
+  min-width: 0 !important;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Ensure paragraphs in project cards wrap (avoid accidental truncation) */
+.project-content p,
+.card p,
+.project p {
+  white-space: normal !important;
+  display: block;
+  margin: 0 0 8px;
+}
+
+/* Make sure card / project containers don't clip vertically on mobile */
+.card,
+.project {
+  overflow-x: hidden;   /* keep horizontal clipped */
+  overflow-y: visible;  /* allow vertical growth when content needs more height */
+  min-height: 0;        /* defensive (mobile Chrome) */
+}
+
+/* Force certificate & timeline preview to show whole image on small screens */
+.timeline-image,
+.cert-image {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 48vh !important; /* cap by viewport fraction so it doesn't overflow */
+}
+
+/* Extra defensive rule: if timeline preview is in a flex column, let it grow */
+.timeline-image-wrap,
+.cert-preview {
+  flex: 1 1 auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Small-screen tweak — ensure carousel doesn't force overly narrow content */
+@media (max-width: 420px) {
+  .carousel,
+  .carousel-viewport {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .project-carousel {
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  /* give project-content full width under the carousel on very small screens */
+  .project-content {
+    flex: 1 1 100% !important;
+  }
+}
