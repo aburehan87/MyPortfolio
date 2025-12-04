@@ -934,3 +934,121 @@ timeline-item {
 }
 
 
+/* ---------- Mobile-safe fixes for project/featured card ---------- */
+
+/* Ensure project cards clip overflowing children */
+.project,
+.card {
+  overflow: hidden; /* prevents images/controls escaping rounded edges */
+}
+
+/* Make the featured project layout responsive:
+   remove fixed 360px preview column when viewport is narrow */
+#project > .card > div:first-child {
+  /* keep the desktop fixed preview, but allow shrinking on small screens */
+  flex: 0 0 360px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* On small screens make preview column fluid */
+@media (max-width: 700px) {
+  #project > .card {
+    /* stack content vertically on narrower viewports */
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #project > .card > div:first-child {
+    flex: 1 1 100%;
+    min-width: 0; /* crucial so flex children can shrink below intrinsic width */
+    max-width: 100%;
+  }
+
+  /* Slightly reduce card padding so content fits nicely on tiny phones */
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+}
+
+/* Make carousel fully responsive */
+.carousel {
+  width: 100%;
+  min-height: auto; /* allow height to be determined by image */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Remove fixed height on image so it scales correctly */
+.carousel-image,
+.cert-image,
+.card img,
+.project img,
+.timeline-image {
+  height: auto !important;
+  max-width: 100%;
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Ensure arrows always stay inside the card and scale down on small screens */
+.carousel-btn {
+  left: 8px;  /* default - left or right classes will override as needed */
+  right: 8px;
+  width: 40px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+/* explicitly place prev/next */
+.carousel-prev { left: 8px; }
+.carousel-next { right: 8px; }
+
+/* On very narrow screens reduce arrow size and spacing so they don't overflow */
+@media (max-width: 420px) {
+  .carousel-btn { width: 36px; height: 34px; left: 6px; right: 6px; }
+  .carousel-image { /* if you still want a visual height cap, use vw */
+    height: auto;
+    max-height: 42vh;
+  }
+}
+
+/* Tag/pill wrapping: prevents pills from forcing horizontal scroll */
+.project .tag,
+.pill,
+.tag {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Allow tag container to wrap naturally */
+.project .project-tags,
+.skill-tags,
+.nav-pills,
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Prevent long words/links from expanding the layout */
+.project,
+.card,
+.timeline-item .content,
+.main-container {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* tiny visual: reduce transform hover effect on mobile (defensive) */
+@media (hover: none), (max-width: 980px) {
+  .card:hover,
+  .project:hover,
+  .btn:hover,
+  .btn-ghost:hover { transform: none; box-shadow: none; }
+}
