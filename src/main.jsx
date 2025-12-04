@@ -8,7 +8,7 @@ import SplashCursor from "./components/SplashCursor";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter   basename="/">
       <SplashCursor 
       // IF U WANT IT TO BE THICKER THEN USE THE BELOW CODE
       // EFFECT 1
