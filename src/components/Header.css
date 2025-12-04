@@ -10,40 +10,40 @@
   z-index: 1000;
 }
 
-/* Hide hamburger on desktop */
-.hamburger {
-  display: none;
-  font-size: 26px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text);
-}
-
-/* Navigation layout */
+/* Default desktop navigation */
 .topnav {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* Mobile layout */
-@media (max-width: 768px) {
+/* Desktop hamburger hidden */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* TABLET + MOBILE VIEW (max-width: 1024px) */
+@media (max-width: 1024px) {
   .hamburger {
-    display: block;
+    display: block; /* Show hamburger on mobile + tablet */
   }
 
   .topnav {
     position: absolute;
     top: 70px;
-    right: 0;
-    width: 200px;
+    right: 20px;
+    width: 220px;
     background: var(--bg);
     flex-direction: column;
     padding: 20px;
-    display: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: none; /* Hidden by default */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
 
   .topnav.open {
@@ -54,5 +54,16 @@
   .topnav button.theme {
     width: 100%;
     text-align: left;
+  }
+}
+
+/* LARGE DESKTOP VIEW (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .topnav {
+    display: flex !important; /* Always show menu */
+  }
+
+  .hamburger {
+    display: none !important; /* Always hide hamburger */
   }
 }
